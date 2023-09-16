@@ -1,0 +1,39 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_SOURCE: root:root@tcp(localhost:3306)/bookStoreTest?charset=utf8mb4&parseTime=True&loc=Local
+      DB_NAME: bookStoreTest
+      DB_USER: root
+      DB_PASSWORD: root
+
+    steps:
+      - name: "Mysql Setup"
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_NAME }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: "Checkout Code"
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+
+      - name: Build
+        run: go build -v ./cmd/main/main.go
+
+      - name: Test
+        run: go test -v ./cmd/main/main_test.go
