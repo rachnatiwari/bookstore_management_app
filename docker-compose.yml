@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:latest
+    ports:
+      - 6603:3306
+    command: --init-file /data/application/init.sql
+    volumes:
+        - ./init.sql:/data/application/init.sql
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bookStore
+
+  app:
+    image: bookstore:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+    environment:
+      DB_SOURCE: root:password@tcp(localhost:3306)/bookStore?charset=utf8mb4&parseTime=True&loc=Local
