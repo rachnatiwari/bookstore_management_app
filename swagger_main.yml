@@ -1,0 +1,128 @@
+consumes:
+    - application/json
+definitions:
+  item:
+    type: object
+    required:
+      - name
+      - author
+      - publication
+    properties:
+      id:
+        type: integer
+        format: int64
+        readOnly: true
+      name:
+        type: string
+        minLength: 1
+      author:
+        type: string
+        minLength: 1
+      publication:
+        type: string
+        minLength: 1
+    example:
+      id: 2
+      name: The Invisible Man
+      author: H.G.Wells
+      publication: Penguine Publication
+  error:
+    type: object
+    required:
+      - message
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string
+    example:
+      code: 404
+      message: Object not found
+info:
+    description: Bookstore Management Application to keep record of books
+    title: Bookstore Management Application
+    version: 1.0.0
+paths:
+  /books:
+    get:
+      description: get list of all the books in store
+      responses:
+        200:
+          description: list all the books in store
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+  /book:
+    post:
+      description: adds a new book in the bookstore database
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/item"
+      responses:
+        200:
+          description: add a new book in store
+          schema:
+            $ref: "#/definitions/item"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+  /book/{id}:
+    parameters:
+        - type: integer
+          format: int64
+          name: id
+          in: path
+          required: true
+    get:
+      description: get details about any specific book
+      responses:
+        200:
+          description: list the details for the id of the book requested
+          schema:
+            $ref: "#/definitions/item"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+    delete:
+      description: delete any book from the database
+      responses:
+        204:
+          description: deletes the entry of book for the id requested
+          schema:
+            $ref: "#/definitions/item"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+    put:
+      description: update the details about a book in the store
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/item"
+      responses:
+        200:
+          description: updates the entry of book for the id requested
+          schema:
+            $ref: "#/definitions/item"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+
+produces:
+    - application/json
+schemes:
+    - http
+swagger: "2.0"
