@@ -16,6 +16,7 @@ func main() {
 	opts := middleware.SwaggerUIOpts{SpecURL: "swagger_main.yml"}
 	sh := middleware.SwaggerUI(opts, nil)
 	r.Handle("/docs", sh)
+	r.Handle("/", http.RedirectHandler("/docs", http.StatusSeeOther))
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe("localhost:3000", r))
 }
