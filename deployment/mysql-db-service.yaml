@@ -1,0 +1,13 @@
+apiVersion: v1                           # API version
+kind: Service                            # Type of kubernetes resource 
+metadata:
+  name: bookstore-management-db-service                  # Name of the resource
+  labels:                                # Labels that will be applied to the resource
+    app: bookstore-management
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+  selector:                              # Selects any Pod with labels `app=bookstore-management-app,tier=mysql`
+    app: bookstore-management
+    tier: mysql
