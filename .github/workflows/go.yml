@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_SOURCE: root:root@tcp(localhost:3306)/bookStoreTest?charset=utf8mb4&parseTime=True&loc=Local
+      DB_SOURCE: root:root@tcp(localhost:3306)/
+      DB_SOURCE_DB: root:root@tcp(localhost:3306)/bookStoreTest?charset=utf8mb4&parseTime=True&loc=Local
       DB_NAME: bookStoreTest
       DB_USER: root
       DB_PASSWORD: root
