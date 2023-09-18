@@ -3,7 +3,6 @@ package config
 import (
 	// "database/sql"
 
-	"database/sql"
 	"fmt"
 	"os"
 
@@ -22,29 +21,18 @@ type Config struct {
 }
 
 func Connect() {
-	// viper.SetConfigFile("app.env")
-	// viper.ReadInConfig()
-	// config := &Config{}
-	// err := viper.Unmarshal(&config)
-	// var dsn string = config.DBSource
-	var dsn string = os.Getenv("DB_SOURCE")
-	sqlDB, _ := sql.Open("mysql", dsn)
-	d, err := gorm.Open(mysql.New(mysql.Config{
-		Conn: sqlDB,
-	}), &gorm.Config{})
 
-	// d, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	// sqlDB, err := d.DB()
-	// sqlDB.SetMaxIdleConns(0)
-	// // sqlDB.SetMaxOpenConns(100)
-	// sqlDB.SetConnMaxLifetime(time.Minute * 4)
+	var dsn string = os.Getenv("DB_SOURCE")
+	d, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	_ = d.Exec("CREATE DATABASE IF NOT EXISTS bookStore;")
+	dsn = os.Getenv("DB_SOURCE_DB")
+	database_after_creation, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	} else {
 		fmt.Println("database started")
 	}
-	db = d
-
+	db = database_after_creation
 }
 
 func GetDB() *gorm.DB {
