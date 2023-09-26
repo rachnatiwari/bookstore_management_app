@@ -1,6 +1,8 @@
 # BOOKSTORE MANAGEMENT APP
 A golang backend application to manage bookstore inventory
 
+![Swagger_Docs](https://github.com/rachnatiwari/bookstore_management_app/assets/41739238/ea9ae1d7-966d-4721-9622-56535d928eb6)
+
 ### TECHLOGY USED
 - Go
 - Docker
